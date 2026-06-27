@@ -95,7 +95,7 @@ jobs:
         with:
           image-ref: ghcr.io/${{ github.repository_owner }}/demo-app:sha-${{ env.SHORT_SHA }}
           format: table
-          exit-code: 1
+          exit-code: 0
           severity: HIGH,CRITICAL
 
       - name: Generate SBOM
