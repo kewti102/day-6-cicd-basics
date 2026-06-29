@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - phase-1/week-2/day-7-cicd-advanced
   pull_request:
     branches:
       - main
