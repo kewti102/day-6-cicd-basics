@@ -69,7 +69,7 @@ jobs:
      
   build-and-push:
     needs: [lint, test]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push'
     uses: ./.github/workflows/reusable-build.yml
     with:
       image_name: demo-app
