@@ -68,17 +68,11 @@ jobs:
         run: npm test
      
   build-and-push:
-    needs: test
-
-    if: github.event_name == 'push' 
-
+    needs: [lint, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: ./.github/workflows/reusable-build.yml
-
     with:
       image_name: demo-app
       image_tag: sha-${{ github.sha }}
-
-    permissions:
-      contents: read
-      packages: write
-      security-events: write
+    secrets:
+      registry_password: ${{ secrets.GITHUB_TOKEN }}
