@@ -92,7 +92,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ step.vars.outputs.short_sha }}
+            ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ steps.vars.outputs.short_sha }}
             ghcr.io/${{ steps.owner.outputs.value }}/demo-app:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -100,7 +100,7 @@ jobs:
       - name: Scan Image with Trivy
         uses: aquasecurity/trivy-action@v0.33.1
         with:
-          image-ref: ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ step.vars.outputs.short_sha }}
+          image-ref: ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ steps.vars.outputs.short_sha }}
           format: table
           exit-code: 1
           ignore-unfixed: true
@@ -110,7 +110,7 @@ jobs:
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
         with:
-          image: ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ step.vars.outputs.short_sha }}
+          image: ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ steps.vars.outputs.short_sha }}
           format: spdx-json
           output-file: sbom.spdx.json
 
