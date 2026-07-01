@@ -66,8 +66,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate Short Commit SHA
-        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - name: Generate short SHA
+        id: vars
+        run: |
+          echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Convert owner name to lowercase
         id: owner
@@ -90,15 +92,15 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ env.SHORT_SHA }}
+            ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ step.vars.outputs.short_sha }}
             ghcr.io/${{ steps.owner.outputs.value }}/demo-app:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Scan Image with Trivy
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@v0.33.1
         with:
-          image-ref: ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ env.SHORT_SHA }}
+          image-ref: ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ step.vars.outputs.short_sha }}
           format: table
           exit-code: 1
           ignore-unfixed: true
@@ -108,7 +110,7 @@ jobs:
       - name: Generate SBOM
         uses: anchore/sbom-action@v0
         with:
-          image: ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ env.SHORT_SHA }}
+          image: ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ step.vars.outputs.short_sha }}
           format: spdx-json
           output-file: sbom.spdx.json
 
