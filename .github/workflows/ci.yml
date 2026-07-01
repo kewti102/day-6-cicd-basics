@@ -106,28 +106,22 @@ jobs:
           
   generate-sbom:
     name: Generate SBOM
-    needs: trivy-scan
+    needs: [trivy-scan, build-image]
     runs-on: ubuntu-latest
 
     steps:
-      - uses: anchore/sbom-action@v0
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
         with:
           image: ghcr.io/${{ needs.build-image.outputs.owner }}/demo-app:sha-${{ needs.build-image.outputs.short_sha }}
           format: spdx-json
           output-file: sbom.spdx.json
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: sbom
-          path: sbom.spdx.json
-          
-  upload-sbom:
-    name: Upload SBOM
-    needs: generate-sbom
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/upload-artifact@v4
+      - name: Upload SBOM Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: sbom
           path: sbom.spdx.json
