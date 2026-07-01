@@ -89,8 +89,8 @@ jobs:
           context: .
           push: true
           tags: |
-          ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ steps.vars.outputs.short_sha }}
-          ghcr.io/${{ steps.owner.outputs.value }}/demo-app:latest
+            ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ steps.vars.outputs.short_sha }}
+            ghcr.io/${{ steps.owner.outputs.value }}/demo-app:latest
   trivy-scan:
     name: Scan image with Trivy
     needs: build-image
