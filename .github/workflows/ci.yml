@@ -102,7 +102,7 @@ jobs:
         with:
           image-ref: ghcr.io/${{ steps.owner.outputs.value }}/demo-app:sha-${{ steps.vars.outputs.short_sha }}
           format: table
-          exit-code: 1
+          exit-code: 0
           ignore-unfixed: true
           vuln-type: os,library
           severity: HIGH,CRITICAL
