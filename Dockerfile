@@ -10,4 +10,5 @@ COPY . .
 
 EXPOSE 3000
 
+USER node
 CMD ["node", "app/server.js"]
